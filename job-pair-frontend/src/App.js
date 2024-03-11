@@ -1,0 +1,32 @@
+import './Styles/App.css';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './Components/Navbar.jsx'
+
+function App() {
+  return (
+    <div className="App">
+      <Navbar />
+      <Routes>
+      <Route path="/" element={<div></div>} />
+      {/* Add your page route here, like the examples given below : */}
+
+      {/* <Route path="/tracking" element={<TrackingPage2 />} />
+      <Route path="/scholarships" element={<JobsPage />} />
+      <Route path="/salaries" element={<SalariesPage />} />
+      <Route path="/learning" element={<LearningPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/employersignup" element={<EmployerSignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/interview" element={<InterviewPage />} />
+      <Route path="/profileBuilder" element={<ProfileBuilder />} />
+      <Route path="/applicationReview" element={<ApplicationReview />} />
+      <Route path="/employerdashboard" element={<EmployerDashboardPage />} /> */}
+
+
+      <Route path="*" element={<h1 style={{marginTop: `5%`, fontFamily:`Ubuntu`}}>Sorry, this page doesn't exist!</h1>} />
+    </Routes>
+    </div>
+  );
+}
+
+export default App;

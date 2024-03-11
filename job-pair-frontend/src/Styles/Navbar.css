@@ -1,0 +1,41 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+  }
+  
+  .navbar .logo {
+    font-weight: bold;
+  }
+  
+  .navbar .menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar .menu a {
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .navbar .menu a.active {
+    background-color: #666;
+    color: white;
+  }
+  
+  .navbar .menu .search-bar {
+    margin-left: 20px;
+  }
+  
+  .navbar .menu .search-bar input {
+    padding: 5px 10px;
+  }
+  
+  /* Hide the menu icon by default */
+  .navbar .menu-icon {
+    display: none;
+  }

@@ -1,0 +1,23 @@
+.button {
+  background-image: linear-gradient(to right, #4B6CB7, #182848); /* Adjust the gradient colors as needed */
+  color: white;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border: none;
+  border-radius: 20px; /* Adjust for desired roundness */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust shadow as needed */
+  font-size: 16px; /* Adjust font size as needed */
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Larger shadow for hover effect */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.button:active {
+  transform: translateY(1px); /* Pressed down effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow for pressed effect */
+}
