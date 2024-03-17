@@ -1,10 +1,9 @@
-import React from 'react';
+import React from 'react'
 import { useState } from 'react';
-import { Form, Button, Col,Modal } from 'react-bootstrap';
-import Select from 'react-select';
+import { Form, Button, Modal } from 'react-bootstrap';
 import '../Styles/profilepage.css';
-export function Profilepageform({user}) {
-// default profile picure taken from https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg
+export function Companyprofilepageform({company}) {
+
 const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
   const selectStyles = {
     control: (provided) => ({
@@ -19,7 +18,8 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
       name: '',
       emailAddress: '',
       password: '',
-      preferredJobTitle: '',
+      location: '',
+      companyDescription: '',
     });
   
     const [selectedImage, setSelectedImage] = useState(null);
@@ -119,30 +119,31 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
             placeholder=""
           />
         </Form.Group>
-        <Form.Group className='mb-2' controlId="formTechSkills">
-        <div> <Form.Label>Tech Skills</Form.Label> </div> 
-          <Select
-            isMulti
-            styles={selectStyles} 
-            options={techSkillOptions}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={handleTechSkillChange}
-            name="multiSelect"
-          />
-        </Form.Group>
-  
-        <Form.Group className='mb-2' controlId="formMoneyInput">
-        <div> <Form.Label>Expected Salary($)</Form.Label> </div> 
+
+        <Form.Group className='mb-2' controlId="formLocation">
+          <div><Form.Label>Location</Form.Label></div>
           <Form.Control
-            type="number"
-            name="moneyInput"
-            value={formInput.expectedsalary}
+            type="text"
+            name="location"
+            value={formInput.name}
             onChange={handleChange}
-            placeholder="Enter amount"
+            placeholder="Location"
           />
         </Form.Group>
-  
+
+        <Form.Group className='mb-2' controlId="formCompanyDescription">
+          <div><Form.Label>Company Description</Form.Label></div>
+          <Form.Control
+            type="text"
+            name="companyDescription"
+            value={formInput.name}
+            onChange={handleChange}
+            placeholder="Describe your company here..."
+            as="textarea" rows={3}
+          />
+        </Form.Group>
+
+      
         <Form.Group className='mb-2' controlId="formPhoneNumber">
        <div>  <Form.Label>Phone Number</Form.Label> </div> 
           <Form.Control

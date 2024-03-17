@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar.jsx'
 import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
+import Companyprofilepage from './Pages/Companyprofilepage.jsx';
 function App() {
   return (
     <div className="App">
@@ -10,7 +11,8 @@ function App() {
       <Routes>
       <Route path="/" element={<div></div>} />
       {/* Add your page route here, like the examples given below : */}
-      <Route path="/profile" element={<Profilepage/>} />
+      <Route path="/userprofile" element={<Profilepage/>} />
+      <Route path="/companyprofile" element={<Companyprofilepage/>} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
