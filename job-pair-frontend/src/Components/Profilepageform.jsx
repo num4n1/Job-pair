@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Col,Modal } from 'react-bootstrap';
 import Select from 'react-select';
 import '../Styles/profilepage.css';
@@ -12,15 +12,30 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
       backgroundColor: '#D9D9D9',
     }),
   };
-    const [formInput, setFormInput] = useState({
-      techSkills: [],
-      expectedsalary: '',
-      phoneNumber: '',
-      name: '',
-      emailAddress: '',
+  useEffect(() => {
+    setFormInput({
+      techSkills: user.techSkills.map(item => ({ value: item, label: item })) || [],
+      expectedsalary: user.expectedsalary || '',
+      phoneNumber: user.phoneNumber || '',
+      name: user.name || '',
+      emailAddress: user.emailAddress || '',
       password: '',
-      preferredJobTitle: '',
+      preferredJobTitle: user.preferredJobTitle || '',
     });
+  }, [user]);
+    const [formInput, setFormInput] = useState({
+      techSkills: user.techSkills.map(item => ({ value: item, label: item })) || [],
+      expectedsalary: user.expectedsalary || '',
+      phoneNumber: user.phoneNumber || '',
+      name: user.name || '',
+      emailAddress: user.emailAddress || '',
+      password: '',
+      preferredJobTitle: user.preferredJobTitle || '',
+    });
+
+
+    
+  
   
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -123,6 +138,7 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
         <div> <Form.Label>Tech Skills</Form.Label> </div> 
           <Select
             isMulti
+            value={formInput.techSkills}
             styles={selectStyles} 
             options={techSkillOptions}
             className="basic-multi-select"

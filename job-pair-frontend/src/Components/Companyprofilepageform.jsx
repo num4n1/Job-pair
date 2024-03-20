@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import '../Styles/profilepage.css';
@@ -11,31 +11,31 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
       backgroundColor: '#D9D9D9',
     }),
   };
-    const [formInput, setFormInput] = useState({
-      techSkills: [],
-      expectedsalary: '',
-      phoneNumber: '',
-      name: '',
-      emailAddress: '',
+
+  useEffect(() => {
+    setFormInput({
+      phoneNumber: company.phoneNumber || '',
+      name: company.name || '',
+      emailAddress: company.emailAddress || '',
       password: '',
-      location: '',
-      companyDescription: '',
+      location: company.location || '',
+      description: company.description || '',
+    });
+  }, [company]);
+
+
+    const [formInput, setFormInput] = useState({
+      phoneNumber: company.phoneNumber || '',
+      name: company.name || '',
+      emailAddress: company.emailAddress || '',
+      password: '',
+      location: company.location || '',
+      description: company.description || '',
     });
   
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const techSkillOptions = [
-      { value: 'Java', label: 'Java' },
-      { value: 'CSS', label: 'CSS' },
-      { value: 'HTML', label: 'HTML' },
-    ];
-  
-    const handleTechSkillChange = (selectedOptions) => {
-      setFormInput({
-        ...formInput,
-        techSkills: selectedOptions || []
-      });
-    };
+   
   
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -125,7 +125,7 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
           <Form.Control
             type="text"
             name="location"
-            value={formInput.name}
+            value={formInput.location}
             onChange={handleChange}
             placeholder="Location"
           />
@@ -136,7 +136,7 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
           <Form.Control
             type="text"
             name="companyDescription"
-            value={formInput.name}
+            value={formInput.description}
             onChange={handleChange}
             placeholder="Describe your company here..."
             as="textarea" rows={3}
