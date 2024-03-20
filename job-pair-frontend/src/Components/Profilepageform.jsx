@@ -13,6 +13,8 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
     }),
   };
   useEffect(() => {
+
+    const fetchData = async () => {
     setFormInput({
       techSkills: user.techSkills.map(item => ({ value: item, label: item })) || [],
       expectedsalary: user.expectedsalary || '',
@@ -22,6 +24,8 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
       password: '',
       preferredJobTitle: user.preferredJobTitle || '',
     });
+  };
+  fetchData();
   }, [user]);
     const [formInput, setFormInput] = useState({
       techSkills: user.techSkills.map(item => ({ value: item, label: item })) || [],

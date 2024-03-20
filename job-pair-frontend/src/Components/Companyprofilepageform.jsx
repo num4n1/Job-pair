@@ -13,6 +13,7 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
   };
 
   useEffect(() => {
+    const fetchData = async () => {
     setFormInput({
       phoneNumber: company.phoneNumber || '',
       name: company.name || '',
@@ -21,6 +22,8 @@ const defaultImageUrl = process.env.PUBLIC_URL + '/defaultprofile.jpg';
       location: company.location || '',
       description: company.description || '',
     });
+  };
+  fetchData();
   }, [company]);
 
 
