@@ -4,6 +4,7 @@ import Navbar from './Components/Navbar.jsx'
 import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
+import Jobpage from './Pages/Jobpage.jsx';
 function App() {
   return (
     <div className="App">
@@ -13,6 +14,7 @@ function App() {
       {/* Add your page route here, like the examples given below : */}
       <Route path="/userprofile/:id" element={<Profilepage/>} />
       <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
+      <Route path="/jobpage/:id" element={<Jobpage/>} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
