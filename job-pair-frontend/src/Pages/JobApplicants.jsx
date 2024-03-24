@@ -62,7 +62,7 @@ function JobApplicants() {
 
   return (
     <div>
-        <div className='header-div'> <img src={job.logoUrl} alt="jobimage"></img> <h1>Applicants for {job.title}</h1> </div>
+        <div className='applicant-header-div'> <img src={job.logoUrl} alt="jobimage"></img> <h1>Applicants for {job.title}</h1> </div>
         <div>
          
             <ul>

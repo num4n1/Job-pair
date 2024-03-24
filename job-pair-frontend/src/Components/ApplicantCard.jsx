@@ -18,22 +18,22 @@ function ApplicantCard({applicant}) {
     }
   return (
     <>
-    <div className='card-div'>
-        <div className='top-row'>
-            <div className='top-row-cell'>
-                <div className='info-box'>
+    <div className='applicant-card-div'>
+        <div className='applicant-top-row'>
+            <div className='applicant-top-row-cell'>
+                <div className='applicant-info-box'>
                     {applicant.name}
                 </div>
-                <div className='info-box'>
+                <div className='applicant-info-box'>
                    GPA: {applicant.GPA}
                 </div>
-                <div className='info-box'>
+                <div className='applicant-info-box'>
                     {applicant.university}
                 </div>
 
                 </div>
-                <div className='top-row-cell'>
-                    <div className='info-box'>
+                <div className='applicant-top-row-cell'>
+                    <div className='applicant-info-box'>
                        Match Score: {applicant.matchScore}%
                     </div>
                     <Button variant="link" onClick={() => setIsStarFilled(!isStarFilled)} style={{ color: isStarFilled ? '#FFD700' : '' }}>
@@ -41,11 +41,11 @@ function ApplicantCard({applicant}) {
     </Button>
                 </div>
         </div>
-        <div className='bottom-row'>
-            <div className='summary-box'>
+        <div className='applicant-bottom-row'>
+            <div className='applicant-summary-box'>
                 {applicant.summary}
                 </div>
-                <div className='buttons-column'>
+                <div className='applicant-buttons-column'>
                 <Button size="sm" variant="primary" onClick={sendInterview} >
           Send Interview
         </Button>
@@ -58,11 +58,11 @@ function ApplicantCard({applicant}) {
             </div>
 
     </div>
-    <div className='mobile-applicant-wrapper'>
-    <div className='card-div-mobile'>
-        <div className='mobile-row'>
-            <div className='mobile-row-info'>
-                <div className='mobile-row-name'>
+    <div className='applicant-mobile-applicant-wrapper'>
+    <div className='applicant-card-div-mobile'>
+        <div className='applicant-mobile-row'>
+            <div className='applicant-mobile-row-info'>
+                <div className='applicant-mobile-row-name'>
                 {applicant.name}
                 </div>
 
@@ -71,23 +71,23 @@ function ApplicantCard({applicant}) {
     </Button>
 
             </div>
-            <div className='mobile-row-info'>
-                <div className='info-box'>
+            <div className='applicant-mobile-row-info'>
+                <div className='applicant-info-box'>
                      GPA: {applicant.GPA}
                      </div>
-                <div className='info-box'>
+                <div className='applicant-info-box'>
                     {applicant.university}
                     </div>
             </div>
         </div>
-        <div className='mobile-row'>
+        <div className='applicant-mobile-row'>
             <div className='summary-box'>
                 {applicant.summary}
                 </div>
                 </div>
 
     </div>
-    <div className='buttons-column'>
+    <div className='applicant-buttons-column'>
                 <Button size="lg" variant="primary" onClick={sendInterview} >
           Send Interview
         </Button>
