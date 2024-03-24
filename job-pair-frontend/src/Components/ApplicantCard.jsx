@@ -34,7 +34,7 @@ function ApplicantCard({applicant}) {
                 </div>
                 <div className='top-row-cell'>
                     <div className='info-box'>
-                       Match Score: {applicant.matchScore}
+                       Match Score: {applicant.matchScore}%
                     </div>
                     <Button variant="link" onClick={() => setIsStarFilled(!isStarFilled)} style={{ color: isStarFilled ? '#FFD700' : '' }}>
       <FontAwesomeIcon icon={isStarFilled ? fasStar : farStar} />
