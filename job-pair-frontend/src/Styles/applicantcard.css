@@ -1,7 +1,7 @@
 .card-div {
     background-color: #f4f4f4;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 1.25em;
+    margin-bottom: 1.25em;
 }
 
 .top-row {
@@ -16,28 +16,28 @@
 
 .info-box {
     background-color: #D9D9D9;
-    padding: 10px;
+    padding: 0.8em;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 1.25em;
 }
 
 .bottom-row {
     display: flex;
-    margin-top: 10px;
+    margin-top: 0.8em;
     gap: 1em;
     max-width: 75%;
 }
 
 .summary-box {
     background-color: #e0e0e0;
-    padding: 5px;
+    padding: 0.5em;
     flex-grow: 1;
 }
 
 .buttons-column {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.8em;
     flex-grow: 0.5;
 }
 
@@ -48,8 +48,8 @@
 }
 
 .header-div img {
-    width: 50px;
-    height: 50px;
+    width: 3.2em;
+    height: 3.2em;
     border-radius: 50%;
 }
 .mobile-applicant-wrapper {
@@ -66,7 +66,7 @@
         background-color: #575DFB;
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding: 1.25em;
         gap:1em;
         margin-bottom: 1em;
 
@@ -85,7 +85,7 @@
 
     .mobile-row {
         background-color: white;
-        padding: 10px;
+        padding: 0.8em;
     }
 
     .mobile-applicant-wrapper {
@@ -98,9 +98,9 @@
 
     .info-box {
         background-color: #D9D9D9;
-        padding: 5px;
+        padding: 0.5em;
         text-align: center;
-        border-radius: 10px;
+        border-radius: 0.8em;
     }
 
     
