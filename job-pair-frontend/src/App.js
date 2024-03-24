@@ -5,6 +5,7 @@ import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
+import JobApplicants from './Pages/JobApplicants.jsx';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
       <Route path="/userprofile/:id" element={<Profilepage/>} />
       <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
       <Route path="/jobpage/:id" element={<Jobpage/>} />
+      <Route path="/applicants/:id" element={<JobApplicants/>} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
