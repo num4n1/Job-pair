@@ -1,0 +1,22 @@
+# Stage 1: Build the React application
+FROM node:16 as build-stage
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock) files
+COPY job-pair-frontend/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the Flask application into the container
+COPY job-pair-frontend/ /app
+
+# Set the environment variable for the port
+ENV PORT=8000
+
+EXPOSE 8000
+
+# Start the application
+CMD ["npm", "start"]

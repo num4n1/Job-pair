@@ -4,12 +4,12 @@ FROM python:3.12.2-alpine
 WORKDIR /app
 
 # Copy the Flask application into the container
-COPY job-pair-backend/ /job-pair-backend
+COPY job-pair-backend/ /app
 
 # Install dependencies
-RUN pip install -r /job-pair-backend/requirements.txt
+RUN pip install -r requirements.txt
 
 # Expose the port the app runs on
 EXPOSE 5000
 
-CMD ["python", "/job-pair-backend/dummy_backend.py"]
+CMD ["python", "dummy_backend.py"]
