@@ -1,0 +1,10 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-Backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./job-pair-backend:/job-pair-backend
