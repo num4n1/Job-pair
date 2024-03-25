@@ -81,7 +81,7 @@ function ApplicantCard({applicant}) {
             </div>
         </div>
         <div className='applicant-mobile-row'>
-            <div className='summary-box'>
+            <div className='applicant-summary-box'>
                 {applicant.summary}
                 </div>
                 </div>
