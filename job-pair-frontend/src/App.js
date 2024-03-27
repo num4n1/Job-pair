@@ -6,6 +6,8 @@ import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
+import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
+
 function App() {
   return (
     <div className="App">
@@ -17,6 +19,7 @@ function App() {
       <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
       <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
+      <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />

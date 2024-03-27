@@ -1,0 +1,121 @@
+/* AdminPanel.css */
+.admin-panel {
+    font-family: 'Arial', sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+  
+  /* Main content styling */
+  .main {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Title styling */
+  .title {
+    text-align: center;
+    font-size: 36px;
+    color: #333;
+    padding: 20px 0;
+    /* font-weight: bold; */
+    margin: 0;
+  }
+  
+  /* Table styling */
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+  }
+  
+  .table thead th {
+    background-color: #575DFB;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 12px 8px;
+    /* border-radius: 8px; */
+  }
+  
+  .table thead th:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .table thead th:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  .table tbody tr {
+    /* background-color: #5c5858; */
+    margin-bottom: 8px; /* Space between rows */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .table tbody td {
+    padding: 10px;
+    background-color: #f0f0f0;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .table tbody td.logo-cell {
+    background-color: #ffffff;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .table tbody td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .table tbody td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  .table tbody td.options-cell {
+    border-radius: 0 8px 8px 0;
+    text-align: right;
+  }
+  
+  /* Logos and icons */
+  .logo-google, .logo-twitter, .logo-ibm {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    /* Additional styles for logos */
+  }
+  
+  .options-button {
+    background-color: #575DFB;
+    color: white;
+    border: none;
+    border-radius: 25%;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e6e6e6;
+  }
+
+  /* Dropdown menu styling */
+.dropdown-menu {
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  right: 10px; /* Adjust as necessary */
+  top: 30px; /* Adjust as necessary */
+}
+
+  
