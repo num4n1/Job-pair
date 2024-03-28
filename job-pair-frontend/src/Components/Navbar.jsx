@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import '../Styles/Navbar.css'; // Make sure to create a corresponding CSS file
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import logo from '../Assets/Job-pair-small 1.png'; // Import the image here
+import '../Styles/Navbar.css'; // Make sure to create a corresponding CSS file
 
-const Navbar = () => {
-    const [active, setActive] = useState('jobs'); // Default active is 'jobs'
+const CustomNavbar = () => {
+    const [expanded, setExpanded] = useState(false); // State to manage mobile menu visibility
 
-    const handleToggle = (buttonId) => {
-        setActive(buttonId);
+    const handleToggle = () => {
+        setExpanded(!expanded); // Toggle mobile menu visibility
     };
 
     const buttons = [
@@ -16,36 +17,27 @@ const Navbar = () => {
         { id: 'profile', text: 'Profile' },
         { id: 'chat', text: 'Chat' }
     ];
+
     return (
-        <nav className="navbar">
-        <img src={logo} alt='Brand logo' />
-        <div className="menu">
-            <div className='menu-options'>
-            {buttons.map((button) => (
-                <a
-                key={button.id}
-                href={'/' + button.id}
-                className={`toggle-button ${active === button.id ? 'active' : ''}`}
-                onClick={(e) => {
-                    e.preventDefault(); // Prevent default anchor link behavior
-                    handleToggle(button.id);
-                }}
-                >
-                {button.text}
-                </a>
-            ))}
-            </div>
-            <div className="search-bar">
-                <input type="text" placeholder="Search" />
-            </div>
-            <a className="logout-button" href="/logout">Logout</a>
-        </div>
-        
-        <div className="menu-icon">
-            {/* Icon to show/hide the menu on small screens */}
-        </div>
-        </nav>
+        <Navbar expand="lg" className="navbar">
+            <Navbar.Brand href="#">
+                <img src={logo} alt='Brand logo' />
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={handleToggle} />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                    {buttons.map((button) => (
+                        <Nav.Link key={button.id} href={'/' + button.id}>
+                            {button.text}
+                        </Nav.Link>
+                    ))}
+                </Nav>
+                <Nav>
+                    <Nav.Link href="/logout">Logout</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
     );
 };
 
-export default Navbar;
+export default CustomNavbar;
