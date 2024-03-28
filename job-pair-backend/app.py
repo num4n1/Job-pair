@@ -99,7 +99,7 @@ def create_job():
         deadline = request.form.get('deadline')
         job_description = request.form.get('job_description')
         company_logo_url = request.form.get('company_logo_url')
-        # For list of questions, expecting them to be sent as a comma-separated string
+        recruiter_id = request.form.get('recruiter_id')
         questions_csv = request.form.get('questions')
         questions = questions_csv.split(',') if questions_csv else []
 
@@ -113,32 +113,39 @@ def create_job():
             'deadline': deadline,
             'job_description': job_description,
             'company_logo_url': company_logo_url,
-            'questions': questions  # This assumes questions is a list of strings
+            'questions': questions
         }
 
-         # Retrieve all jobs to determine the new job's ID
+        # Retrieve all jobs to determine the new job's ID
         total_jobs = db.collection('jobs').stream()
-        num_jobs = len(list(total_jobs))  # Count the documents
+        num_jobs = len(list(total_jobs))
 
         # Assign an auto-incremented ID to the new job
-        job_id = num_jobs + 1
-
-        # Create a new job document in the 'jobs' collection with the auto-incremented ID
+        job_id = str(num_jobs + 1)
         job_data['id'] = job_id  # Append the calculated ID to the job_data dictionary
-        db.collection('jobs').add(job_data)  # Use add for auto-generated document ID
+        new_job_ref = db.collection('jobs').add(job_data)  # Use add for auto-generated document ID
 
-        recruiter_id = request.form.get('recruiter_id')
+        # If recruiter_id is provided, update the recruiter's document
         if recruiter_id:
-            # Get the recruiter's document
-            recruiter_ref = db.collection('recruiters').document(recruiter_id)
-            # Add the job_id to the recruiter's my_job_ids array
-            recruiter_ref.update({'my_job_ids': ArrayUnion([job_id])})
+            # Find the recruiter's document by 'id' field
+            recruiters_query = db.collection('recruiters').where('id', '==', int(recruiter_id)).limit(1)
+            recruiters_docs = recruiters_query.stream()
+            
+            recruiter_doc = next(recruiters_docs, None)
+            if recruiter_doc:
+                # Add the job_id to the recruiter's my_job_ids array
+                recruiter_ref = db.collection('recruiters').document(recruiter_doc.id)
+                recruiter_ref.update({'my_job_ids': ArrayUnion([job_id])})
+            else:
+                # Recruiter not found, handle the error appropriately
+                return jsonify({'error': 'Recruiter not found'}), 404
 
-        return jsonify({'success': True, 'message': 'Job created successfully'}), 200
+        # If everything is successful, return success message
+        return jsonify({'success': True, 'message': 'Job created successfully', 'job_id': job_id}), 200
 
     except Exception as e:
+        # Catch all exceptions and return an error message
         return jsonify({'error': str(e)}), 500
-
 @app.route('/get_all_resources', methods=['GET'])
 def get_all_resources():
     try:
