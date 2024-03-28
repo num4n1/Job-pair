@@ -20,6 +20,7 @@ function App() {
       <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
+      <Route path="/createjob" element={<CreateJobPage/>} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
