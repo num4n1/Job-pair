@@ -82,3 +82,41 @@
     margin-top: 0.5rem;
   }
   
+  @media only screen and (max-width: 600px) {
+    .ce-job-form-container {
+      padding: 1rem;
+      margin: 1rem;
+      width: 90%;
+    }
+  
+    .ce-job-form-container form {
+      grid-gap: 0.5rem;
+    }
+  
+    .ce-job-form-container label,
+    .ce-job-form-container input[type="text"],
+    .ce-job-form-container input[type="date"],
+    .ce-job-form-container textarea {
+      width: 100%;
+    }
+  
+    .ce-job-form-container textarea {
+      height: 150px;
+    }
+  
+    .ce-job-form-container button[type="submit"] {
+      width: 100%;
+      padding: 1rem;
+    }
+  
+    .jobdesc textarea {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  
+    .ce-job-form-twos {
+      display: block; /* stack the elements instead of flex */
+      gap: 0;
+    }
+  }
+  
