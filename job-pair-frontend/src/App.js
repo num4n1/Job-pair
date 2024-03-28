@@ -7,6 +7,7 @@ import Companyprofilepage from './Pages/Companyprofilepage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
 import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
+import Viewjobs from './Pages/Viewjobs.jsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
+      <Route path='/viewjobs' element= {<Viewjobs/>}/>
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
