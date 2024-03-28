@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CreateJobPage.css';
+import '../Styles/CreateJobPage.css';
 
 function CreateJobPage() {
   const [jobDetails, setJobDetails] = useState({

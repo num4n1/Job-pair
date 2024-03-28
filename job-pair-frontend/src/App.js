@@ -6,7 +6,8 @@ import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
-import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
+import AdminPanelPage from './Pages/AdminPanelPage.jsx';
+import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 
 function App() {
   return (
