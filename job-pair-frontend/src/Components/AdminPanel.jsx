@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Styles/AdminPanel.css'; // Import the separate CSS file
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const flaggedConversations = [
   { id: 1, companyLogo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg", user: 'James Halpert', reason: 'Message Overflow', date: '10 Sept 2024' },
@@ -63,15 +64,14 @@ const AdminPanel = () => {
                 <td>{conversation.reason}</td>
                 <td>{conversation.date}</td>
                 <td className="options" style={{ position: 'relative' }}>
-                  <div className="dropdown">
-                    <button className="options-button" onClick={() => toggleDropdown(conversation.id)}>⋮</button>
-                    {openDropdownId === conversation.id && (
-                      <div className="dropdown-content" style={{ position: 'absolute', top: '100%', left: 0, zIndex: 1 }}>
-                        <button onClick={() => handleOptionSelect(conversation.id, 'delete')}>Delete</button>
-                        <button onClick={() => handleOptionSelect(conversation.id, 'resolve')}>Resolve</button>
-                      </div>
-                    )}
-                  </div>
+                  <Dropdown>
+                    <Dropdown.Toggle>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleOptionSelect(conversation.id, 'delete')}>Delete</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleOptionSelect(conversation.id, 'resolve')}>Resolve</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </td>
               </tr>
             ))}
