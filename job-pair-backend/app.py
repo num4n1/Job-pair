@@ -13,6 +13,8 @@ import os
 import firebase_admin
 from firebase_admin import auth, credentials, firestore
 from openai import OpenAI
+from google.cloud.firestore_v1 import ArrayUnion
+
 # from speechToText import extract_audio, transcribe_audio
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -85,27 +87,57 @@ def login():
     except Exception as e:
         return jsonify({'error': str(e)}), 401
 
-@app.route('/add_jobs', methods=['POST'])
-def add_jobs():
-    data = request.json
-    
-    # Extract username and jobs from the JSON data
-    username = data.get('username')
-    jobs = data.get('jobs', [])
+@app.route('/create_job', methods=['POST'])
+def create_job():
+    try:
+        # Extract job and recruiter details from the form data
+        job_title = request.form.get('job_title')
+        job_location = request.form.get('job_location')
+        salary = request.form.get('salary')
+        technical_skills = request.form.get('technical_skills')
+        company = request.form.get('company')
+        deadline = request.form.get('deadline')
+        job_description = request.form.get('job_description')
+        company_logo_url = request.form.get('company_logo_url')
+        # For list of questions, expecting them to be sent as a comma-separated string
+        questions_csv = request.form.get('questions')
+        questions = questions_csv.split(',') if questions_csv else []
 
-    # Validate that both username and jobs are present
-    if not username or not jobs:
-        return jsonify({'error': 'Invalid request. Missing username or jobs.'}), 400
+        # Create a new job document in the 'jobs' collection
+        job_data = {
+            'job_title': job_title,
+            'job_location': job_location,
+            'salary': salary,
+            'technical_skills': technical_skills,
+            'company': company,
+            'deadline': deadline,
+            'job_description': job_description,
+            'company_logo_url': company_logo_url,
+            'questions': questions  # This assumes questions is a list of strings
+        }
 
-    # Add jobs to the database
-    for job in jobs:
-        title = job.get('Title')
-        if title:
-            db.collection('users').document(username).collection('job').document(title).set(job)
-        else:
-            return jsonify({'error': 'Invalid job. Missing title.'}), 400
+         # Retrieve all jobs to determine the new job's ID
+        total_jobs = db.collection('jobs').stream()
+        num_jobs = len(list(total_jobs))  # Count the documents
 
-    return jsonify({'success': True})
+        # Assign an auto-incremented ID to the new job
+        job_id = num_jobs + 1
+
+        # Create a new job document in the 'jobs' collection with the auto-incremented ID
+        job_data['id'] = job_id  # Append the calculated ID to the job_data dictionary
+        db.collection('jobs').add(job_data)  # Use add for auto-generated document ID
+
+        recruiter_id = request.form.get('recruiter_id')
+        if recruiter_id:
+            # Get the recruiter's document
+            recruiter_ref = db.collection('recruiters').document(recruiter_id)
+            # Add the job_id to the recruiter's my_job_ids array
+            recruiter_ref.update({'my_job_ids': ArrayUnion([job_id])})
+
+        return jsonify({'success': True, 'message': 'Job created successfully'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/get_all_resources', methods=['GET'])
 def get_all_resources():
