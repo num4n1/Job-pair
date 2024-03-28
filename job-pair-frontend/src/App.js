@@ -1,6 +1,6 @@
 import './Styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './Components/Navbar.jsx'
+import Navbar from './Components/Navbar.jsx';
 import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
@@ -8,6 +8,7 @@ import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
 import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
 import InterviewPage from './Pages/InterviewPage.jsx';
+import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
       <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
       <Route path="/interview/:id" element={<InterviewPage/>} />  
+      <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
+      <Route path="/createjob" element={<CreateJobPage/>} />
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
