@@ -10,6 +10,7 @@ import InterviewPage from './Pages/InterviewPage.jsx';
 import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 import TrackingPage from './Pages/TrackingPage.jsx';
 import Viewjobs from './Pages/Viewjobs.jsx';
+import ApplicationReviewPage from './Pages/ApplicationReviewPage.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/userprofile" element={<Profilepage/>} />
       <Route path="/companyprofile" element={<Companyprofilepage/>} />
       <Route path="/applicants" element={<JobApplicants/>} /> 
+      <Route path="/applicationReview" element={<ApplicationReviewPage/>} />
       <Route path="/interview" element={<InterviewPage/>} />  
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       <Route path="/createjob" element={<CreateJobPage/>} />
