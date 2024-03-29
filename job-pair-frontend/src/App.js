@@ -9,6 +9,7 @@ import AdminPanelPage from './Pages/AdminPanelPage.jsx';
 import InterviewPage from './Pages/InterviewPage.jsx';
 import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 import TrackingPage from './Pages/TrackingPage.jsx';
+import Jobpage from './Pages/Jobpage.jsx';
 import Viewjobs from './Pages/Viewjobs.jsx';
 import ApplicationReviewPage from './Pages/ApplicationReviewPage.jsx';
 
@@ -28,6 +29,20 @@ function App() {
       <Route path="/createjob" element={<CreateJobPage/>} />
       <Route path="/tracking" element={<TrackingPage/>} />
       <Route path= "/viewJobs" element={<Viewjobs />}/>
+       <Route path= "/viewJobs" element={<Jobpage />}/>
+      {/* <Route path="/tracking" element={<TrackingPage2 />} />
+      <Route path="/scholarships" element={<JobsPage />} />
+      <Route path="/salaries" element={<SalariesPage />} />
+      <Route path="/learning" element={<LearningPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/employersignup" element={<EmployerSignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/interview" element={<InterviewPage />} />
+      <Route path="/profileBuilder" element={<ProfileBuilder />} />
+      <Route path="/applicationReview" element={<ApplicationReview />} />
+      <Route path="/employerdashboard" element={<EmployerDashboardPage />} /> */}
+
+
       <Route path="*" element={<h1 style={{marginTop: `5%`, fontFamily:`Ubuntu`}}>Sorry, this page doesn't exist!</h1>} />
     </Routes>
     </div>
