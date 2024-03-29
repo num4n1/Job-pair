@@ -1,43 +1,50 @@
 import React, { useState } from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import logo from '../Assets/Job-pair-small 1.png'; // Import the image here
+import { Link } from "react-router-dom";
 import '../Styles/Navbar.css'; // Make sure to create a corresponding CSS file
+import logo from '../Assets/Job-pair-small 1.png'; // Import the image here
 
-const CustomNavbar = () => {
-    const [expanded, setExpanded] = useState(false); // State to manage mobile menu visibility
+const Navbar = () => {
+    const [active, setActive] = useState('jobs'); // Default active is 'jobs'
 
-    const handleToggle = () => {
-        setExpanded(!expanded); // Toggle mobile menu visibility
+    const handleToggle = (buttonId) => {
+        setActive(buttonId);
+
     };
 
     const buttons = [
-        { id: 'jobs', text: 'Jobs' },
-        { id: 'interviews', text: 'Interviews' },
+        { id: 'viewJobs', text: 'Jobs' },
+        { id: 'interview', text: 'Interview' },
         { id: 'tracking', text: 'Tracking' },
-        { id: 'profile', text: 'Profile' },
+        { id: 'userprofile', text: 'Profile' },
         { id: 'chat', text: 'Chat' }
     ];
-
     return (
-        <Navbar expand="lg" className="navbar">
-            <Navbar.Brand href="#">
-                <img src={logo} alt='Brand logo' />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={handleToggle} />
-            <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                    {buttons.map((button) => (
-                        <Nav.Link key={button.id} href={'/' + button.id}>
-                            {button.text}
-                        </Nav.Link>
-                    ))}
-                </Nav>
-                <Nav>
-                    <Nav.Link href="/logout">Logout</Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+        <nav className="navbar">
+        <img src={logo} alt='Brand logo' />
+        <div className="menu">
+            <div className='menu-options'>
+            {buttons.map((button) => (
+                <Link 
+                    key={button.id}
+                    to={'/'+button.id}
+                    className={`toggle-button ${active === button.id ? 'active' : ''}`}
+                    onClick={() => handleToggle(button.id)}
+                >
+                    {button.text}
+                </Link>
+            ))}
+            </div>
+            <div className="search-bar">
+                <input type="text" placeholder="Search" />
+            </div>
+            <a className="logout-button" href="/logout">Logout</a>
+        </div>
+        
+        <div className="menu-icon">
+            {/* Icon to show/hide the menu on small screens */}
+        </div>
+        </nav>
     );
 };
 
-export default CustomNavbar;
+export default Navbar;

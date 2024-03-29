@@ -18,14 +18,14 @@ function App() {
       <Routes>
       <Route path="/" element={<div></div>} />
       {/* Add your page route here, like the examples given below : */}
-      <Route path="/userprofile/:id" element={<Profilepage/>} />
-      <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
-      <Route path="/applicants/:id" element={<JobApplicants/>} /> 
+      <Route path="/userprofile" element={<Profilepage/>} />
+      <Route path="/companyprofile" element={<Companyprofilepage/>} />
+      <Route path="/applicants" element={<JobApplicants/>} /> 
       <Route path="/interview" element={<InterviewPage/>} />  
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       <Route path="/createjob" element={<CreateJobPage/>} />
       <Route path="/tracking" element={<TrackingPage/>} />
-       <Route path= "/viewJobs" element={<Viewjobs />}/>
+      <Route path= "/viewJobs" element={<Viewjobs />}/>
       <Route path="*" element={<h1 style={{marginTop: `5%`, fontFamily:`Ubuntu`}}>Sorry, this page doesn't exist!</h1>} />
     </Routes>
     </div>
