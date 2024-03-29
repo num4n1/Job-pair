@@ -4,7 +4,6 @@ import Navbar from './Components/Navbar.jsx';
 import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
-import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
 import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
 import InterviewPage from './Pages/InterviewPage.jsx';
@@ -21,10 +20,10 @@ function App() {
       {/* Add your page route here, like the examples given below : */}
       <Route path="/userprofile/:id" element={<Profilepage/>} />
       <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
-      <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
       <Route path="/interview/:id" element={<InterviewPage/>} />  
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
+       <Route path= "/viewJobs" element={<Viewjobs />}/>
       {/* <Route path="/tracking" element={<TrackingPage2 />} />
       <Route path="/scholarships" element={<JobsPage />} />
       <Route path="/salaries" element={<SalariesPage />} />
