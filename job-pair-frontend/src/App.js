@@ -4,12 +4,12 @@ import Navbar from './Components/Navbar.jsx';
 import Profilepage from './Pages/Profilepage.jsx';
 import './Styles/custom.css';
 import Companyprofilepage from './Pages/Companyprofilepage.jsx';
-import Jobpage from './Pages/Jobpage.jsx';
 import JobApplicants from './Pages/JobApplicants.jsx';
 import AdminPanelPage from './Pages/AdminPanelPage.jsx'; 
 import InterviewPage from './Pages/InterviewPage.jsx';
 import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 import TrackingPage from './Pages/TrackingPage.jsx';
+import Viewjobs from './Pages/Viewjobs.jsx';
 
 function App() {
   return (
@@ -20,12 +20,12 @@ function App() {
       {/* Add your page route here, like the examples given below : */}
       <Route path="/userprofile/:id" element={<Profilepage/>} />
       <Route path="/companyprofile/:id" element={<Companyprofilepage/>} />
-      <Route path="/jobpage/:id" element={<Jobpage/>} />
       <Route path="/applicants/:id" element={<JobApplicants/>} /> 
       <Route path="/interview" element={<InterviewPage/>} />  
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       <Route path="/createjob" element={<CreateJobPage/>} />
       <Route path="/tracking" element={<TrackingPage/>} />
+       <Route path= "/viewJobs" element={<Viewjobs />}/>
       <Route path="*" element={<h1 style={{marginTop: `5%`, fontFamily:`Ubuntu`}}>Sorry, this page doesn't exist!</h1>} />
     </Routes>
     </div>
