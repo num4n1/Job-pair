@@ -187,13 +187,15 @@ def get_all_jobs_brief():
 @app.route('/get_all_jobs', methods=['GET'])
 def get_all_jobs():
     username = request.args.get('username')
+    print(username)
 
     # Validate that username is present
     if not username:
         return jsonify({'error': 'Invalid request. Missing username.'}), 400
 
-    docs = db.collection('users').document(username).collection('jobs').get()
+    docs = db.collection('seekers').document(username).collection('applied_jobs').get()
     result = [doc.to_dict() for doc in docs]
+    print(result)
 
     return jsonify(result)
 
