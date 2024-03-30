@@ -232,26 +232,40 @@ def update_job_answer():
     try:
         # Get data from the request
         data = request.json
-        username = data.get('username')
-        job_title = data.get('title')
+        seeker_id = data.get('user_id')
+        job_id = data.get('job_id')
         index = data.get('index')
         updated_answer = data.get('updated_answer')
 
         # Validate required fields
-        if not username or not job_title or index is None or updated_answer is None:
-            return jsonify({'error': 'Invalid request. Missing required fields.'}), 400
+        # if not seeker_id or not job_title or index is None or updated_answer is None:
+        #     return jsonify({'error': 'Invalid request. Missing required fields.'}), 400
 
-        # Retrieve the job document
-        job_ref = db.collection('users').document(username).collection('jobs').document(job_title)
-        job_doc = job_ref.get().to_dict()
+        # Start by querying the 'seekers' collection for the document with the matching 'id'
+        seeker_query = db.collection('seekers').where('id', '==', seeker_id).limit(1)
+        seeker_docs = seeker_query.get()
 
-        # Update the 'Answers' field at the specified index
-        current_answers = job_doc.get('Answers')
+        # Check if we got any results back
+        if not seeker_docs:
+            return jsonify({'message': 'No applied jobs found for the given user ID, job ID.'}), 404
+
+        # Assuming the seeker exists, we retrieve the first document
+        seeker_doc_ref = seeker_docs[0].reference  # Get the reference to the document
+
+        # Now, use the reference to access the 'applied_jobs' subcollection
+        applied_jobs_query = seeker_doc_ref.collection('applied_jobs').where('job_id', '==', job_id).limit(1)
+        applied_job = applied_jobs_query.get()
+
+        if not applied_job :
+            return jsonify({'message': 'No applied jobs found for the given user ID, job ID.'}), 404
+
+        applied_job_ref = applied_job[0].reference
+        applied_job_doc = applied_job_ref.get()
+        current_answers = applied_job_doc.to_dict().get('application_response', [])
 
         if 0 <= index < len(current_answers):
-            print(index)
             current_answers[index] = updated_answer
-            job_ref.update({'Answers': current_answers})
+            applied_job_ref.update({'application_response': current_answers})
             return jsonify({'success': True})
 
         return jsonify({'error': 'Invalid index.'}), 400
