@@ -76,12 +76,10 @@ const TrackingPage = () => {
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
-    // Check if the item was dropped outside any valid droppable area
     if (!destination) {
       return;
     }
 
-    // If the item was dropped in a different column
     if (destination.droppableId !== source.droppableId) {
       const updatedApplications = { ...applications };
       const sourceColumn = updatedApplications[source.droppableId];
@@ -90,19 +88,15 @@ const TrackingPage = () => {
         (app) => app.job_id === draggableId
       );
 
-      // Remove from the source column
       sourceColumn.splice(source.index, 1);
-      // Add to the destination column
       destinationColumn.splice(destination.index, 0, movedApplication);
-      // Update the state
       setApplications(updatedApplications);
 
-      // Update the backend
-      
       try {
-        await axios.post(`${API_BASE_URL}/update_status`, {
-          username: 'zeeshan',
-          title: movedApplication.job_title,
+        console.log(destination);
+        await axios.post(`${API_BASE_URL}/update_job_status`, {
+          user_id: 1,
+          job_id: movedApplication.job_id,
           new_status: destination.droppableId,
         });
       }

@@ -3,6 +3,7 @@ import threading
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+import traceback
 # from speechToText import transcribe_audio
 # from recordAudio import record_audio
 # from recordVideo import record_video   
@@ -371,13 +372,26 @@ def update_job_status():
     try:
         # Get data from the request
         data = request.json
-        username = data.get('username')
-        job_title = data.get('title')
+        seeker_id = data.get('user_id')
+        job_id = data.get('job_id')
         new_status = data.get('new_status')
 
-        # Update user profile in the database
-        db.collection('users').document(username).collection('jobs').document(job_title).update({'Status': new_status})
+        seeker_query = db.collection('seekers').where('id', '==', seeker_id).limit(1)
+        seeker_docs = seeker_query.get()
 
+        if not seeker_docs:  
+            return jsonify({'message': 'No applied jobs found for the given user ID, job ID.'}), 404
+
+        seeker_doc_ref = seeker_docs[0].reference  
+
+        applied_jobs_ref  = seeker_doc_ref.collection('applied_jobs').document(job_id)
+        applied_job = applied_jobs_ref.get()
+
+        if not applied_job.exists:
+            return jsonify({'message': 'Applied job not found for the given job ID.'}), 404
+
+        applied_jobs_ref.update({'application_status': new_status})
+        
         return jsonify({'success': True, 'message': 'Job status updated successfully'}), 200
 
     except Exception as e:
