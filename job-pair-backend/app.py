@@ -15,6 +15,7 @@ import firebase_admin
 from firebase_admin import auth, credentials, firestore
 from openai import OpenAI
 from google.cloud.firestore_v1 import ArrayUnion
+import bcrypt
 
 # from speechToText import extract_audio, transcribe_audio
 app = Flask(__name__)
@@ -34,59 +35,72 @@ db=firestore.client()
 
 # client = OpenAI()
 
-
 @app.route('/signup', methods=['POST'])
 def signup():
     try:
-        # Get user data from the request
-        data = request.json
-        email = data.get('email')
-        password = data.get('password')
-        phone_number = data.get('phone_number')
-        username = data.get('username')
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
+        # Parse the incoming data from the signup form
+        signup_data = request.json
+        username = signup_data['username']
+        email = signup_data['email']
+        full_name = signup_data['fullName']
+        password = signup_data['password']
+        user_type = signup_data['user_type']
 
-        # Create a new user account with the provided email and password
-        user = auth.create_user(
-            email=email,
-            password=password
-        )
+        # Create a reference to the Firestore document
+        user_ref = db.collection(user_type).document(username)
 
-        data_to_store = {
-            "email": email,
-            "password": password,
-            "phone_number": phone_number,
-            "username": username,
-            "first_name": first_name,
-            "last_name": last_name
-        }
+        # Create a new document with the provided data
+        user_ref.set({
+            'email': email,
+            'fullName': full_name,
+            'username': username,
+            'password': password,  # Store hashed password as a string
+        })
 
-        # Update user profile in the database
-        db.collection('users').document(username).collection('personal_info').document('my_info').set(data_to_store)
+        user_data = user_ref.get().to_dict()
 
-        return jsonify({'success': True}), 201  # Corrected closing parenthesis
+        return jsonify({"success": True, "message": "User created successfully", 'user_data': user_data}), 201
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Handle exceptions
+        return jsonify({"success": False, "message": str(e)}), 500
+    
 
-# Endpoint for user login
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/signin', methods=['POST'])
+def signin():
     try:
-        # Get user data from the request
-        data = request.json
-        email = data.get('email')
-        password = data.get('password')
+        # Parse the incoming data from the sign-in form
+        signin_data = request.json
+        email = signin_data['email']
+        password = signin_data['password']
+        userType = signin_data['userType']
 
-        # Sign in the user with the provided email and password
-        user = auth.get_user_by_email(email)
-        user_token = auth.create_custom_token(user.uid)
+        # Reference to the Firestore document of the user
+        user_query_ref = db.collection(userType).where('email', '==', email).limit[1]
+        user_query_ref.get()
 
-        return jsonify({'success': True, 'uid': user.uid, 'token': user_token}), 200
+        if user_query_ref:
+            print(user_query_ref[0].to_dict())
+
+        # Check if the document exists and if the password matches
+        # if user_doc.exists:
+        #     user_data = user_doc.to_dict()
+        #     stored_password = user_data['password'].encode('utf-8')  # Encode the stored password
+
+        #     # Compare the entered password with the stored hash
+        #     if (password == stored_password):
+        #         # Authentication successful
+        return jsonify({"success": True, "message": "User signed in successfully", "user_data": 'pink'}), 200
+        #     else:
+        #         # Authentication failed
+        #         return jsonify({"success": False, "message": "Incorrect password"}), 401
+        # else:
+        #     # User not found
+        #     return jsonify({"success": False, "message": "User not found"}), 404
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 401
+        # Handle exceptions
+        return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/create_job', methods=['POST'])
 def create_job():
@@ -178,10 +192,10 @@ def get_all_jobs_brief():
 
     return jsonify(result)
 
+#TODO: Change this api so that it uses user_id rather than username for filtering the users. 
 @app.route('/get_all_jobs', methods=['GET'])
 def get_all_jobs():
     username = request.args.get('username')
-    print(username)
 
     # Validate that username is present
     if not username:
@@ -189,7 +203,6 @@ def get_all_jobs():
 
     docs = db.collection('seekers').document(username).collection('applied_jobs').get()
     result = [doc.to_dict() for doc in docs]
-    print(result)
 
     return jsonify(result)
 

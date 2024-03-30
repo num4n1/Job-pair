@@ -4,28 +4,28 @@ import '../Styles/SignupPage.css'; // Make sure this is the correct path to your
 import logoImage from '../Assets/Job-pair-small 1.png'; // Update with the correct path to your logo image
 import google from '../Assets/google.png'; // Update with the correct path to your logo image
 import outlook from '../Assets/outlook.png'; // Update with the correct path to your logo image
-import { useNavigate  } from 'react-router-dom';
+import { Link, useNavigate} from "react-router-dom";
+
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [role, setRole] = useState('Patient'); // Initialize role state
-  const [patientID, setPatientID] = useState(''); // Initialize patientNumber state
+  const [userType, setUserType] = useState('seekers'); // Initialize role state
   const [username, setUsername] = useState(''); // State for username
-  const navigate = useNavigate();  // Hook to access the history instance
+  let navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     try {
-        const signupResponse = await axios.post('https://i-sole-backend.com/signup', {
+        const signupResponse = await axios.post(`${API_BASE_URL}/signup`, {
             username: username,
             email: email,
             password: password,
             fullName: fullName,
-            role: role,
-            patientID: role === 'Patient' ? '' : patientID,
+            user_type: userType,
         });
 
         if (signupResponse.data.success) {
@@ -38,42 +38,13 @@ const SignupPage = () => {
             localStorage.setItem('patientID', patientID);
             localStorage.setItem('userRole', role);
 
-            // Call the initialize_counter endpoint only if role is 'Patient'
-            if (role === 'Patient') {
-              const counterResponse = await axios.post('https://i-sole-backend.com/initialize_counter', {
-                username: username,
-              });
-
-              if (counterResponse.data.success) {
-                console.log("Counter initialized successfully");
-              } else {
-                console.log("Failed to initialize counter");
-              }
-            }
-
-            navigate('/feedback');  // Redirect to '/feedback' route
+            navigate('/viewJobs');
         } else {
             console.log("Failed to create account");
         }
       } catch (error) {
           console.error('Error during sign up:', error);
       }
-  };
-
-
-  // Function to render the patient number input when role is Doctor or Family
-  const renderPatientNumberInput = () => {
-    if (role === 'Doctor' || role === 'Family') {
-      return (
-        <input
-          type="text"
-          placeholder="Patient ID"
-          value={patientID}
-          onChange={(e) => setPatientID(e.target.value)}
-        />
-      );
-    }
-    return null;
   };
 
   return (
@@ -130,25 +101,22 @@ const SignupPage = () => {
             />
             <div className="dropdown-container">
               <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                id="userType"
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
               >
-                <option value="Patient">Patient</option>
-                <option value="Family">Family</option>
-                <option value="Doctor">Doctor</option>
+                <option value="seekers">Job Seeker</option>
+                <option value="admins">Admin</option>
+                <option value="recruiters">Recruiter</option>
               </select> 
               <span className="dropdown-arrow">&#9660;</span>
             </div>
-
-            {/* Render the patient number input based on the selected role */}
-           {renderPatientNumberInput()}
 
             <button type="submit" className="create-account-button">Create Account</button>
           </form>
           <div className="signup-footer">
             <p>
-              <a href="#/login">Already have an account?</a>
+              <Link to={'/login'}>Already have an account?</Link>
             </p>
           </div>
 

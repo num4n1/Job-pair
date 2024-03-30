@@ -4,19 +4,20 @@ import logoImage from '../Assets/Job-pair-small 1.png'; // Update with the corre
 import google from '../Assets/google.png'; // Update with the correct path to your logo image
 import outlook from '../Assets/outlook.png'; // Update with the correct path to your logo image
 import axios from 'axios'; // Import axios for making API requests
-import { useNavigate  } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 const LoginPage = () => {
   const [username, setUsername] = useState(''); // Change to username
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();  // Hook to access the history instance
 
   const handleSignIn = async (e) => { // Change the function name to handleSignIn
     e.preventDefault();
 
     try {
       // Make a POST request to your backend sign-in endpoint
-      const response = await axios.post('https://i-sole-backend.com/signin', {
+      const response = await axios.post(`${API_BASE_URL}/signin`, {
         username: username, // Use the username state variable
         password: password,
       });
@@ -33,8 +34,6 @@ const LoginPage = () => {
         // Log curr_username for debugging
         console.log('curr_username:', username);
       
-        // Redirect to your main application page or dashboard
-        navigate('/feedback');  // Redirect to '/feedback' route
       } else {
         // Authentication failed, handle the error (e.g., show an error message)
         console.error('Sign-in failed:', response.data.message);
@@ -99,7 +98,8 @@ const LoginPage = () => {
           </form>
           <div className="signup-footer">
             <p>
-              <a href="#signup">Don't have an account?</a>
+              <Link to={'/signup'}>Don't have an account?</Link>
+              {/* <a href="#signup">Don't have an account?</a> */}
             </p>
           </div>
 
