@@ -282,7 +282,7 @@ def submit_application():
         title = data.get('title')
 
         # Update the 'Submitted' field to True
-        db.collection('users').document(username).collection('scholarship').document(title).update({'Submitted': True})
+        db.collection('users').document(username).collection('job').document(title).update({'Submitted': True})
 
         return jsonify({'success': True, 'message': 'Application submitted successfully.'})
 
@@ -298,10 +298,10 @@ def submit_application():
 #         answer = request.json.get('answer')
 
 #         # Define the initial conversation
-#         conversations = [{"role": "system", "content": "You are a helpful assistant who specializes in enhancing users' scholarship essays"}]
+#         conversations = [{"role": "system", "content": "You are a helpful assistant who specializes in enhancing users' job essays"}]
 
 #         # Format user's request message
-#         request_message = f"The question asked in my scholarship application is this: {question} My Response is: {answer} Provide just the improved essay in about 100 words)"
+#         request_message = f"The question asked in my job application is this: {question} My Response is: {answer} Provide just the improved essay in about 100 words)"
 #         request_message_formatted = {'content': request_message, 'role': 'user'}
 
 #         # Add user's request to the conversation
@@ -424,7 +424,7 @@ def get_my_job_applicants():
         return jsonify({'error': str(e)}), 500
 # @app.route('/test', methods=['GET'])
 # def test():
-#     conversations = [{"role": "system", "content": "You are a helpful assistant who specilaizes in enhancing users scholarship essays"}]
+#     conversations = [{"role": "system", "content": "You are a helpful assistant who specilaizes in enhancing users job essays"}]
 
 #     response = client.chat.completions.create(
 #         model="gpt-3.5-turbo",
