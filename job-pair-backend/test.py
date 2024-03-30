@@ -1,7 +1,7 @@
 import requests
 
 # URL of the Flask app
-url = "http://localhost:5000/"
+url = "http://localhost:5000/get_all_jobs_brief"
 
 # Send a GET request
 response = requests.get(url)

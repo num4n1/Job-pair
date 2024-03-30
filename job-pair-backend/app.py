@@ -163,23 +163,16 @@ def get_all_resources():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
+#Fixed for job-pair
 @app.route('/get_all_jobs_brief', methods=['GET'])
 def get_all_jobs_brief():
-    username = request.args.get('username')
 
-    # Validate that username is present
-    if not username:
-        return jsonify({'error': 'Invalid request. Missing username.'}), 400
-
-    docs = db.collection('users').document(username).collection('jobs').get()
+    docs = db.collection('jobs').get()
     result = []
     for doc in docs:
         job_data = doc.to_dict()
-        # Remove "Questions" and "Answers" fields if they exist, and "Description"
         job_data.pop('Questions', None)
-        job_data.pop('Answers', None)
-        job_data.pop('Description', None)  # Assuming jobs also have descriptions that are not needed in brief
+        job_data.pop('Requirements', None)  # Assuming jobs also have descriptions that are not needed in brief
         result.append(job_data)
 
     return jsonify(result)
