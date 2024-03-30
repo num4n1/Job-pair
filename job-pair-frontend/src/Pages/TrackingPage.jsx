@@ -1,5 +1,3 @@
-// TrackingPage.js
-
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
@@ -71,7 +69,7 @@ const TrackingPage = () => {
         setApplications(categorizedApplications);
       })
       .catch((error) => {
-        console.error('Error fetching scholarship applications:', error);
+        console.error('Error fetching Job applications:', error);
       });
   }, []);
 
@@ -89,24 +87,28 @@ const TrackingPage = () => {
       const sourceColumn = updatedApplications[source.droppableId];
       const destinationColumn = updatedApplications[destination.droppableId];
       const movedApplication = sourceColumn.find(
-        (app) => app.id === draggableId
+        (app) => app.job_id === draggableId
       );
 
       // Remove from the source column
       sourceColumn.splice(source.index, 1);
-
       // Add to the destination column
       destinationColumn.splice(destination.index, 0, movedApplication);
-
       // Update the state
       setApplications(updatedApplications);
 
       // Update the backend
-      await axios.post(`${API_BASE_URL}/update_status`, {
-        username: 'zeeshan',
-        title: movedApplication.Title,
-        new_status: destination.droppableId,
-      });
+      
+      try {
+        await axios.post(`${API_BASE_URL}/update_status`, {
+          username: 'zeeshan',
+          title: movedApplication.job_title,
+          new_status: destination.droppableId,
+        });
+      }
+      catch (error){
+        console.error("Error occoured while updating database, ", error);
+      }
     }
   };
 
@@ -116,6 +118,7 @@ const TrackingPage = () => {
         <div className="TrackingPage">
           <div className="columns-container ">
             {Object.keys(applications).map((column) => (
+              
               <Droppable droppableId={column} key={column}>
                 {(provided) => (
                   <div
@@ -126,8 +129,8 @@ const TrackingPage = () => {
                     <h2 className={`${styles.SubHeader}`} style={{ fontWeight: 'bold', fontSize: '28px', textAlign: 'center', paddingTop: `15px`, paddingBottom:`10px`, fontWeight:`bolder`, color:`#7F95D1`}}>{Get_Title_Name(column)}</h2>
                     {applications[column].map((application, index) => (
                       <Draggable
-                        key={application.id}
-                        draggableId={application.id}
+                        key={application.job_id}
+                        draggableId={application.job_id}
                         index={index}
                       >
                         {(provided) => (
@@ -139,7 +142,6 @@ const TrackingPage = () => {
                             onClick={() => redirectToApplicationReview(application.Title)}
                           >
                             <p>{application.job_title}</p>
-                            {/* Add more details if needed */}
                           </div>
                         )}
                       </Draggable>
