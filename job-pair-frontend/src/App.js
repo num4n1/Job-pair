@@ -9,7 +9,8 @@ import AdminPanelPage from './Pages/AdminPanelPage.jsx';
 import InterviewPage from './Pages/InterviewPage.jsx';
 import CreateJobPage from './Pages/CreateJobPage.jsx'; 
 import TrackingPage from './Pages/TrackingPage.jsx';
-import Viewjobs from './Pages/Viewjobs.jsx';
+import Jobpage from './Pages/Jobpage.jsx';
+import ApplicationReviewPage from './Pages/ApplicationReviewPage.jsx';
 
 function App() {
   return (
@@ -21,11 +22,15 @@ function App() {
       <Route path="/userprofile" element={<Profilepage/>} />
       <Route path="/companyprofile" element={<Companyprofilepage/>} />
       <Route path="/applicants" element={<JobApplicants/>} /> 
+      <Route path="/applicationReview" element={<ApplicationReviewPage/>} />
       <Route path="/interview" element={<InterviewPage/>} />  
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       <Route path="/createjob" element={<CreateJobPage/>} />
       <Route path="/tracking" element={<TrackingPage/>} />
-      <Route path= "/viewJobs" element={<Viewjobs />}/>
+       <Route path= "/viewJobs" element={<Jobpage />}/>
+ 
+
+
       <Route path="*" element={<h1 style={{marginTop: `5%`, fontFamily:`Ubuntu`}}>Sorry, this page doesn't exist!</h1>} />
     </Routes>
     </div>
