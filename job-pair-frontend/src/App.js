@@ -18,7 +18,6 @@ function App() {
       <Navbar />
       <Routes>
       <Route path="/" element={<div></div>} />
-      {/* Add your page route here, like the examples given below : */}
       <Route path="/userprofile" element={<Profilepage/>} />
       <Route path="/companyprofile" element={<Companyprofilepage/>} />
       <Route path="/applicants" element={<JobApplicants/>} /> 

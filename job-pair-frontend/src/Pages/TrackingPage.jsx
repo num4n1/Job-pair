@@ -4,18 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axios from 'axios';
 import '../Styles/TrackingPage.css';
-import {
-  Container,
-  DropdownButton,
-  Dropdown,
-  Row,
-  Form,
-  FormLabel,
-  Button,
-  Card,
-  Modal,
-  Col,
-} from "react-bootstrap";
+import {  Container } from "react-bootstrap";
 import { styles } from "../Styles/Trackingpagestyles"
 
 const API_BASE_URL = 'http://127.0.0.1:5000';
@@ -56,7 +45,11 @@ const TrackingPage = () => {
 
   useEffect(() => {
     // Fetch scholarship applications from the backend
-    axios.get(`${API_BASE_URL}/get_all_scholarships?username=zeeshan`)
+    axios.get(`${API_BASE_URL}/get_all_applied_jobs`, {
+      params: {
+        'id' : 1
+      }
+    })
       .then((response) => {
         const categorizedApplications = {
           applied: [],
@@ -66,12 +59,11 @@ const TrackingPage = () => {
           rejected: [],
         };
 
-        // console.log(response);
+        console.log( response.data);
 
         // Categorize applications based on the 'status' key in the response
-        response.data.forEach((application) => {
-          const Status  = application.Status;
-        //   console.log(Status);
+        response.data['applied_jobs'].forEach((application) => {
+          const Status  = application.application_status;
           categorizedApplications[Status].push(application);
         });
 
@@ -146,7 +138,7 @@ const TrackingPage = () => {
                             className="card"
                             onClick={() => redirectToApplicationReview(application.Title)}
                           >
-                            <p>{application.Title}</p>
+                            <p>{application.job_title}</p>
                             {/* Add more details if needed */}
                           </div>
                         )}
