@@ -11,6 +11,7 @@ import CreateJobPage from './Pages/CreateJobPage.jsx';
 import TrackingPage from './Pages/TrackingPage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
 import ApplicationReviewPage from './Pages/ApplicationReviewPage.jsx';
+import LoginPage from './Pages/LoginPage.jsx'
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
       <Route path="/admin/flagged-conversations" element={<AdminPanelPage />} />
       <Route path="/createjob" element={<CreateJobPage/>} />
       <Route path="/tracking" element={<TrackingPage/>} />
-       <Route path= "/viewJobs" element={<Jobpage />}/>
+      <Route path= "/viewJobs" element={<Jobpage />}/>
+      <Route path= "/login" element={<LoginPage />}/>
  
 
 

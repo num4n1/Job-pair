@@ -17,10 +17,43 @@ function CreateJobPage() {
     setJobDetails({ ...jobDetails, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form submitted:', jobDetails);
-  };
+  
+    // Define the API endpoint
+    const apiEndpoint = 'http://localhost:5000/create_job'; // Adjust the URL based on your actual endpoint
+  
+    // Prepare the data to be sent in the request
+    const formData = new FormData();
+    formData.append('job_title', jobDetails.jobTitle);
+    formData.append('job_location', jobDetails.jobLocation);
+    formData.append('salary', jobDetails.salary);
+    formData.append('technical_skills', jobDetails.technicalSkills);
+    formData.append('company', jobDetails.company);
+    formData.append('deadline', jobDetails.deadline);
+    formData.append('job_description', jobDetails.jobDescription);
+    // Append other fields as necessary
+  
+    try {
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        body: formData // Sending the form data
+      });
+  
+      const responseData = await response.json(); // Assuming the server responds with JSON
+  
+      if (response.ok) {
+        console.log('Job created successfully:', responseData);
+        // Handle success response (e.g., showing a success message or redirecting)
+      } else {
+        console.error('Failed to create job:', responseData);
+        // Handle non-success responses (e.g., showing an error message)
+      }
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+      // Handle network errors or other unexpected errors
+    }
+  };  
 
   return (
     <div className="ce-job-form-container-upper">
