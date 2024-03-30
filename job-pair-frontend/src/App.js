@@ -12,6 +12,7 @@ import TrackingPage from './Pages/TrackingPage.jsx';
 import Jobpage from './Pages/Jobpage.jsx';
 import ApplicationReviewPage from './Pages/ApplicationReviewPage.jsx';
 import LoginPage from './Pages/LoginPage.jsx'
+import SignupPage from './Pages/SignupPage.jsx';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/tracking" element={<TrackingPage/>} />
       <Route path= "/viewJobs" element={<Jobpage />}/>
       <Route path= "/login" element={<LoginPage />}/>
+      <Route path= "/signup" element={<SignupPage />}/>
  
 
 
