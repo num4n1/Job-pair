@@ -199,6 +199,41 @@ def get_all_jobs():
 
     return jsonify(result)
 
+
+@app.route('/get_all_applied_jobs', methods=['GET'])
+def get_all_applied_jobs():
+    seeker_id = request.args.get('id')
+
+    # Validate that seeker ID is present
+    if not seeker_id:
+        return jsonify({'error': 'Invalid request. Missing user ID.'}), 400
+    
+    try:
+        seeker_id = int(seeker_id)  # Convert to int, assuming ID is numeric
+    except ValueError:
+        return jsonify({'error': 'Invalid ID format. ID must be numeric.'}), 400
+
+    seekers_query = db.collection('seekers').where('id', '==', seeker_id).limit(1)
+    seekers_docs = seekers_query.get()
+
+    applied_jobs = []
+
+    if seekers_docs:
+        seeker_doc_ref = seekers_docs[0].reference  # Get the document reference
+        # Fetch all documents in the 'applied_jobs' subcollection
+        applied_jobs_docs = seeker_doc_ref.collection('applied_jobs').get()
+        # Iterate through the applied jobs and add their data to the list
+        for job_doc in applied_jobs_docs:
+            job_data = job_doc.to_dict()
+            job_data['job_id'] = job_doc.id  # Include the job document ID
+            applied_jobs.append(job_data)
+
+    if applied_jobs:
+        return jsonify({'applied_jobs': applied_jobs})
+    else:
+        # Return a message if no applied jobs were found
+        return jsonify({'message': 'No applied jobs found for the given user ID.'}), 404
+
 @app.route('/update_job_answer', methods=['POST'])  # Assuming this relates to updating a job application answer
 def update_job_answer():
     try:
