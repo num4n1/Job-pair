@@ -163,23 +163,16 @@ def get_all_resources():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
+#Fixed for job-pair
 @app.route('/get_all_jobs_brief', methods=['GET'])
 def get_all_jobs_brief():
-    username = request.args.get('username')
 
-    # Validate that username is present
-    if not username:
-        return jsonify({'error': 'Invalid request. Missing username.'}), 400
-
-    docs = db.collection('users').document(username).collection('jobs').get()
+    docs = db.collection('jobs').get()
     result = []
     for doc in docs:
         job_data = doc.to_dict()
-        # Remove "Questions" and "Answers" fields if they exist, and "Description"
         job_data.pop('Questions', None)
-        job_data.pop('Answers', None)
-        job_data.pop('Description', None)  # Assuming jobs also have descriptions that are not needed in brief
+        job_data.pop('Requirements', None)  # Assuming jobs also have descriptions that are not needed in brief
         result.append(job_data)
 
     return jsonify(result)
@@ -187,41 +180,92 @@ def get_all_jobs_brief():
 @app.route('/get_all_jobs', methods=['GET'])
 def get_all_jobs():
     username = request.args.get('username')
+    print(username)
 
     # Validate that username is present
     if not username:
         return jsonify({'error': 'Invalid request. Missing username.'}), 400
 
-    docs = db.collection('users').document(username).collection('jobs').get()
+    docs = db.collection('seekers').document(username).collection('applied_jobs').get()
     result = [doc.to_dict() for doc in docs]
+    print(result)
 
     return jsonify(result)
+
+
+@app.route('/get_all_applied_jobs', methods=['GET'])
+def get_all_applied_jobs():
+    seeker_id = request.args.get('id')
+
+    # Validate that seeker ID is present
+    if not seeker_id:
+        return jsonify({'error': 'Invalid request. Missing user ID.'}), 400
+    
+    try:
+        seeker_id = int(seeker_id)  # Convert to int, assuming ID is numeric
+    except ValueError:
+        return jsonify({'error': 'Invalid ID format. ID must be numeric.'}), 400
+
+    seekers_query = db.collection('seekers').where('id', '==', seeker_id).limit(1)
+    seekers_docs = seekers_query.get()
+
+    applied_jobs = []
+
+    if seekers_docs:
+        seeker_doc_ref = seekers_docs[0].reference  # Get the document reference
+        # Fetch all documents in the 'applied_jobs' subcollection
+        applied_jobs_docs = seeker_doc_ref.collection('applied_jobs').get()
+        # Iterate through the applied jobs and add their data to the list
+        for job_doc in applied_jobs_docs:
+            job_data = job_doc.to_dict()
+            job_data['job_id'] = job_doc.id  # Include the job document ID
+            applied_jobs.append(job_data)
+
+    if applied_jobs:
+        return jsonify({'applied_jobs': applied_jobs})
+    else:
+        # Return a message if no applied jobs were found
+        return jsonify({'message': 'No applied jobs found for the given user ID.'}), 404
 
 @app.route('/update_job_answer', methods=['POST'])  # Assuming this relates to updating a job application answer
 def update_job_answer():
     try:
         # Get data from the request
         data = request.json
-        username = data.get('username')
-        job_title = data.get('title')
+        seeker_id = data.get('user_id')
+        job_id = data.get('job_id')
         index = data.get('index')
         updated_answer = data.get('updated_answer')
 
         # Validate required fields
-        if not username or not job_title or index is None or updated_answer is None:
-            return jsonify({'error': 'Invalid request. Missing required fields.'}), 400
+        # if not seeker_id or not job_title or index is None or updated_answer is None:
+        #     return jsonify({'error': 'Invalid request. Missing required fields.'}), 400
 
-        # Retrieve the job document
-        job_ref = db.collection('users').document(username).collection('jobs').document(job_title)
-        job_doc = job_ref.get().to_dict()
+        # Start by querying the 'seekers' collection for the document with the matching 'id'
+        seeker_query = db.collection('seekers').where('id', '==', seeker_id).limit(1)
+        seeker_docs = seeker_query.get()
 
-        # Update the 'Answers' field at the specified index
-        current_answers = job_doc.get('Answers')
+        # Check if we got any results back
+        if not seeker_docs:
+            return jsonify({'message': 'No applied jobs found for the given user ID, job ID.'}), 404
+
+        # Assuming the seeker exists, we retrieve the first document
+        seeker_doc_ref = seeker_docs[0].reference  # Get the reference to the document
+
+        # Now, use the reference to access the 'applied_jobs' subcollection
+        applied_jobs_query = seeker_doc_ref.collection('applied_jobs').where('job_id', '==', job_id).limit(1)
+        applied_job = applied_jobs_query.get()
+
+        if not applied_job :
+            return jsonify({'message': 'No applied jobs found for the given user ID, job ID.'}), 404
+
+        applied_job_ref = applied_job[0].reference
+        applied_job_doc = applied_job_ref.get()
+        current_answers = applied_job_doc.to_dict().get('application_response', [])
 
         if 0 <= index < len(current_answers):
-            print(index)
             current_answers[index] = updated_answer
-            job_ref.update({'Answers': current_answers})
+            applied_job_ref.update({'application_response': current_answers})
             return jsonify({'success': True})
 
         return jsonify({'error': 'Invalid index.'}), 400
