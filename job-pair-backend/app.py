@@ -86,7 +86,7 @@ def signin():
         signin_data = request.json
         email = signin_data['email']
         password = signin_data['password']
-        userType = signin_data['userType']
+        userType = signin_data['usertype']
         print(f"Attempting to sign in user: {email}, {userType}")
 
         # Query the Firestore database
@@ -177,6 +177,8 @@ def create_job():
     except Exception as e:
         # Catch all exceptions and return an error message
         return jsonify({'error': str(e)}), 500
+    
+
 @app.route('/get_all_resources', methods=['GET'])
 def get_all_resources():
     try:
@@ -208,19 +210,42 @@ def get_all_jobs_brief():
 
     return jsonify(result)
 
-#TODO: Change this api so that it uses user_id rather than username for filtering the users. 
+#Fixed
 @app.route('/get_all_jobs', methods=['GET'])
 def get_all_jobs():
-    username = request.args.get('username')
+    userType = request.args.get('usertype')
+    identifier = request.args.get('id')  # 'id' here is used generically; it could represent different types of identifiers.
 
-    # Validate that username is present
-    if not username:
-        return jsonify({'error': 'Invalid request. Missing username.'}), 400
+    if userType == 'seekers':
+        # Return all jobs for job seekers
+        jobs = db.collection('jobs').get()
+        result = [job.to_dict() for job in jobs]
+        return jsonify(result), 200
 
-    docs = db.collection('seekers').document(username).collection('applied_jobs').get()
-    result = [doc.to_dict() for doc in docs]
+    elif userType == 'recruiters':
+        # For recruiters, find jobs posted by their company using a 'username' or similar identifier
+        if not identifier:
+            return jsonify({'error': 'Invalid request. Missing identifier for recruiter.'}), 400
+        
+        # Assuming 'identifier' represents a unique field akin to a username for recruiters
+        # Adapted the search to use a 'where' clause as suggested
 
-    return jsonify(result)
+        identifier_int = int(identifier)
+        recruiters = db.collection('recruiters').where('id', '==', identifier_int).limit(1).get()
+        for recruiter in recruiters:
+            recruiter_data = recruiter.to_dict()
+            company_name = recruiter_data.get('company')
+
+            # Assuming company_name exists and is valid, find jobs associated with this company
+            jobs = db.collection('jobs').where('company', '==', company_name).get()
+            result = [job.to_dict() for job in jobs]
+            return jsonify(result), 200
+
+        # If no recruiters were found or loop didn't return, indicate recruiter was not found
+        return jsonify({'error': 'Recruiter not found.'}), 404
+
+    else:
+        return jsonify({'error': 'Invalid user type.'}), 400
 
 
 @app.route('/get_all_applied_jobs', methods=['GET'])
