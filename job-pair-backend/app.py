@@ -35,6 +35,7 @@ db=firestore.client()
 
 # client = OpenAI()
 
+#Fixed
 @app.route('/signup', methods=['POST'])
 def signup():
     try:
@@ -43,29 +44,41 @@ def signup():
         username = signup_data['username']
         email = signup_data['email']
         full_name = signup_data['fullName']
-        password = signup_data['password']
-        user_type = signup_data['user_type']
+        password = signup_data['password'] 
+        user_type = signup_data['usertype']
 
-        # Create a reference to the Firestore document
-        user_ref = db.collection(user_type).document(username)
+        # Get the current user counter for the specific user_type collection
+        counter_ref = db.collection(user_type).document('counter')
+        counter_doc = counter_ref.get()
 
-        # Create a new document with the provided data
-        user_ref.set({
-            'email': email,
-            'fullName': full_name,
-            'username': username,
-            'password': password,  # Store hashed password as a string
-        })
+        if counter_doc.exists:
+            counter_data = counter_doc.to_dict()
+            new_user_id = counter_data['curr_count'] + 1  # Increment the counter to use as the new user's ID
+ 
+            # Create a new document with the provided data plus the new_user_id
+            user_ref = db.collection(user_type).document(username)
+            user_ref.set({
+                'email': email,
+                'fullName': full_name,
+                'username': username,
+                'password': password,  
+                'userID': new_user_id,  # Assign the unique userID
+            })
 
-        user_data = user_ref.get().to_dict()
+            # Update the counter in the database
+            counter_ref.update({'curr_count': new_user_id})
 
-        return jsonify({"success": True, "message": "User created successfully", 'user_data': user_data}), 201
+            user_data = user_ref.get().to_dict()
+
+            return jsonify({"success": True, "message": "User created successfully", 'user_data': user_data}), 201
+        else:
+            return jsonify({"success": False, "message": "Counter document does not exist"}), 500
 
     except Exception as e:
         # Handle exceptions
         return jsonify({"success": False, "message": str(e)}), 500
     
-
+#Fixed
 @app.route('/signin', methods=['POST'])
 def signin():
     try:
@@ -74,31 +87,34 @@ def signin():
         email = signin_data['email']
         password = signin_data['password']
         userType = signin_data['userType']
+        print(f"Attempting to sign in user: {email}, {userType}")
 
-        # Reference to the Firestore document of the user
-        user_query_ref = db.collection(userType).where('email', '==', email).limit[1]
-        user_query_ref.get()
+        # Query the Firestore database
+        users_ref = db.collection(userType)
+        query_ref = users_ref.where('email', '==', email).limit(1)
+        docs = query_ref.stream()
 
-        if user_query_ref:
-            print(user_query_ref[0].to_dict())
+        for doc in docs:
+            user_doc = doc.to_dict()
+            # print(f"Database returned: {user_doc}")
+            stored_password = user_doc.get('password', '')
+            # Here, you would check if the password matches (omitted for brevity).
+            if password == stored_password:
+                # Authentication successful
+                return jsonify({"success": True, "message": "User signed in successfully", "user_data": user_doc}), 200
+            else:
+                # Password does not match
+                return jsonify({"success": False, "message": "Incorrect password"}), 401
 
-        # Check if the document exists and if the password matches
-        # if user_doc.exists:
-        #     user_data = user_doc.to_dict()
-        #     stored_password = user_data['password'].encode('utf-8')  # Encode the stored password
-
-        #     # Compare the entered password with the stored hash
-        #     if (password == stored_password):
-        #         # Authentication successful
-        return jsonify({"success": True, "message": "User signed in successfully", "user_data": 'pink'}), 200
-        #     else:
-        #         # Authentication failed
-        #         return jsonify({"success": False, "message": "Incorrect password"}), 401
-        # else:
-        #     # User not found
-        #     return jsonify({"success": False, "message": "User not found"}), 404
+        # If the loop completes without returning, no user was found
+        return jsonify({"success": False, "message": "User not found"}), 404
 
     except Exception as e:
+        error_details = traceback.format_exc()  # Get the full traceback
+
+        # It's usually not a good idea to send the full traceback to the client for security reasons.
+        # Consider logging the traceback server-side, and sending a more generic error message to the client.
+        print("Error details:", error_details)  # Log the full error
         # Handle exceptions
         return jsonify({"success": False, "message": str(e)}), 500
 
